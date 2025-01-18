@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop.DragDropActions
+namespace Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem.DragAndDrop.DragDropActions
 {
     public class ScaleUpOnDragStart : DragDropAbstractAction
     {

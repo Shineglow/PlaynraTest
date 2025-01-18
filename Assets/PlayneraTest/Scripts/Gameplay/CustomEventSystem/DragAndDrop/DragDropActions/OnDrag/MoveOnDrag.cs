@@ -1,14 +1,11 @@
-﻿using Assets.PlayneraTest.Scripts.Gameplay.CameraScripts;
-using PlayneraTest.Scripts.Gameplay.CameraScripts;
-using PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
-using UnityEngine;
+﻿using PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
 using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop.DragDropActions
+namespace Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem.DragAndDrop.DragDropActions
 {
     public class MoveOnDrag : DragDropAbstractAction
     {
-        private const float VERTICAL_OFFSET_IN_UNITS = 0.3f;
+        private const float VERTICAL_OFFSET_IN_UNITS = 0.5f;
 
         public override void DoAction(IDragDropItem dragDropItem, PointerEventData eventData, AdditionalDragDropInfo additionalDragDropInfo)
         {

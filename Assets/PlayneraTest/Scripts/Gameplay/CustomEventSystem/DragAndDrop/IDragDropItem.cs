@@ -7,6 +7,8 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
 {
     public interface IDragDropItem : ITransformAccessorFull
     {
+        EItemType ItemType { get; }
+
         event Action<IDragDropItem, PointerEventData> BeginDrag;
         event Action<IDragDropItem, PointerEventData> Drag;
         event Action<IDragDropItem, PointerEventData> EndDrag;

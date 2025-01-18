@@ -15,8 +15,7 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
         private readonly ICamera _camera;
         private readonly ICameraMovement _cameraMovement;
 
-        public bool IsDragNow {get; private set;}
-
+        public bool IsDragNow { get; private set; }
         public bool IsHoldNow { get; private set; }
 
         public CameraSlideSystem(ICamera camera, ICameraMovement cameraMovement)

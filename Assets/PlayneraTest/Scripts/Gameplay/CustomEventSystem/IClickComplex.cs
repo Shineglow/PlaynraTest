@@ -1,6 +1,6 @@
 ﻿using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem
+namespace Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem
 {
     internal interface IClickComplex : IPointerDownHandler, IPointerUpHandler
     {

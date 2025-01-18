@@ -1,6 +1,7 @@
 ﻿using Assets.PlayneraTest.Scripts.Gameplay.CameraScripts;
 using Assets.PlayneraTest.Scripts.General;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace PlayneraTest.Scripts.Gameplay.CameraScripts
 {
@@ -15,7 +16,12 @@ namespace PlayneraTest.Scripts.Gameplay.CameraScripts
 
         public Vector3 Position
         {
-            get => _camera.transform.position; set => _camera.transform.position = value;
+            get => _camera.transform.position; 
+            set
+            {
+                value.x = Mathf.Clamp(value.x, _minPosX, _maxPosX);
+                _camera.transform.position = value; 
+            }
         }
         public Quaternion Rotation
         {
@@ -55,12 +61,6 @@ namespace PlayneraTest.Scripts.Gameplay.CameraScripts
             {
                 _direction.x = -1f;
             }
-        }
-
-        public void SetPosition(Vector3 position)
-        {
-            position.x = Mathf.Clamp(position.x, _minPosX, _maxPosX);
-            Position = position;
         }
 
         public void SlowlyMoveToTheRight()

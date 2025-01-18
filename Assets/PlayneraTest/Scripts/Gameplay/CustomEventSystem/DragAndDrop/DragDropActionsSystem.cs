@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
+namespace Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem.DragAndDrop
 {
     internal class DragDropActionsSystem : IDragDropRegister
     {
@@ -16,6 +16,7 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
         private readonly List<DragDropAbstractAction> _onPointerUpActions;
         private readonly ICamera _camera;
         private readonly ICameraMovement _cameraMovement;
+        private readonly IEventSystemAccessor _eventSytemAccesor;
         private readonly float _horizontalCameraMovementTriggerZone;
 
         public event Action<IDragDropItem, PointerEventData> EndDrag;
@@ -29,6 +30,7 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
         public DragDropActionsSystem(
             ICamera camera,
             ICameraMovement cameraMovement,
+            IEventSystemAccessor eventSytemAccesor,
             List<DragDropAbstractAction> onPointerDownActions,
             List<DragDropAbstractAction> onDragActions,
             List<DragDropAbstractAction> onPointerUpActions,
@@ -36,6 +38,7 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
         {
             _camera = camera;
             _cameraMovement = cameraMovement;
+            _eventSytemAccesor = eventSytemAccesor;
             _items = new List<IDragDropItem>();
             _onPointerDownActions = onPointerDownActions ?? new List<DragDropAbstractAction>();
             _onDragActions = onDragActions ?? new List<DragDropAbstractAction>();

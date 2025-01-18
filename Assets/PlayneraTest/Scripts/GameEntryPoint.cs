@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
-using Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop.DragDropActions;
+using Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem;
+using Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem.DragAndDrop;
+using Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem.DragAndDrop.DragDropActions;
 using PlayneraTest.Scripts.Gameplay.CameraScripts;
 using PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
-using PlayneraTest.Scripts.Gameplay.EventSystem.SurfaceSystem;
 using PlayneraTest.Scripts.Gameplay.PseudoPhysics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace PlayneraTest.Scripts
 {
@@ -14,7 +15,7 @@ namespace PlayneraTest.Scripts
         private DragDropActionsSystem _dragDropSystem;
         private CameraSlideSystem _cameraSlideSystem;
         private PseudoPhysicsProcessor _pseudoPhysicsProcessor;
-        private SurfaceDetectionSystem _surfaceDetectionSystem;
+        private IEventSystemAccessor _eventSytemAccesor;
         [SerializeField, Range(0.01f, 0.1f)] private float triggerZone;
 
         
@@ -26,21 +27,23 @@ namespace PlayneraTest.Scripts
         [SerializeField] private List<DragDropBase> dragDropItemsStatic = new List<DragDropBase>();
         [SerializeField] private List<DragDropBase> dragDropItemsDynamic = new List<DragDropBase>();
         [SerializeField] private List<PseudoPhysicsBody> pseudoPhysicsBodies = new List<PseudoPhysicsBody>();
-        [SerializeField] private List<SurfacePointerListener> surfacePointerListeners = new List<SurfacePointerListener>();
+
+        [SerializeField] private EventSystem eventSystem;
 
         private void Awake()
         {
             main.Init(cameraStartX, cameraEndX, cameraMovementSpeed);
+            _eventSytemAccesor = new EventSystemWraper(eventSystem);
             _dragDropSystem = new DragDropActionsSystem(
                 main,
                 main,
+                _eventSytemAccesor,
                 new() { new ScaleUpOnDragStart(this) },
                 new() { new MoveOnDrag() },
                 new() { new ScaleDownOnDragEnd(this) },
                 triggerZone);
-            _cameraSlideSystem = new CameraSlideSystem(main, main);
-            _pseudoPhysicsProcessor = new PseudoPhysicsProcessor();
-            _surfaceDetectionSystem = new();
+            _cameraSlideSystem = new CameraSlideSystem( main, main );
+            _pseudoPhysicsProcessor = new PseudoPhysicsProcessor(_dragDropSystem, _eventSytemAccesor);
         }
 
         private void Start()
@@ -59,11 +62,11 @@ namespace PlayneraTest.Scripts
             {
                 _pseudoPhysicsProcessor.Add(pseudoPhysicsBody);
             }
+        }
 
-            foreach (var surfacePointerListener in surfacePointerListeners)
-            {
-                surfacePointerListener.Init(_surfaceDetectionSystem);
-            }
+        private void FixedUpdate()
+        {
+            _pseudoPhysicsProcessor.FixedUpdate();
         }
     }
 }

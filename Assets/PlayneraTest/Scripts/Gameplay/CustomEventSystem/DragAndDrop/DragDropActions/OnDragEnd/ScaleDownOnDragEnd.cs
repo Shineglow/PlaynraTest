@@ -4,14 +4,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop.DragDropActions
+namespace Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem.DragAndDrop.DragDropActions
 {
     public class ScaleDownOnDragEnd : DragDropAbstractAction
     {
         private const float SPEED = 0.1f;
         private Vector3 TargetScale { get; } = Vector3.one * 0.1f;
 
-        private IEnumerable scaleRoutine;
         private MonoBehaviour _coroutineHolder;
         private ITransformAccessorFull _transformAccessorFull;
         private IDragDropRegister _dragDropRegister;

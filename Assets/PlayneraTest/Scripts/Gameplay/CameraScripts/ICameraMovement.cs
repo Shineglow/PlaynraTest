@@ -7,6 +7,5 @@ namespace PlayneraTest.Scripts.Gameplay.CameraScripts
     {
         void SlowlyMoveToTheRight();
         void SlowlyMoveToTheLeft();
-        void SetPosition(Vector3 position);
     }
 }

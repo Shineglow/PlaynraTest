@@ -4,7 +4,7 @@ using PlayneraTest.Scripts.Gameplay.CameraScripts;
 using PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
 using UnityEngine;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
+namespace Assets.PlayneraTest.Scripts.Gameplay.CustomEventSystem.DragAndDrop
 {
     public struct AdditionalDragDropInfo
     {
