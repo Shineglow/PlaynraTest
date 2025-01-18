@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
+using Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop.DragDropActions;
 using PlayneraTest.Scripts.Gameplay.CameraScripts;
 using PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
 using PlayneraTest.Scripts.Gameplay.EventSystem.SurfaceSystem;
@@ -9,7 +11,7 @@ namespace PlayneraTest.Scripts
 {
     public class GameEntryPoint : MonoBehaviour
     {
-        private DragDropSystem _dragDropSystem;
+        private DragDropActionsSystem _dragDropSystem;
         private CameraSlideSystem _cameraSlideSystem;
         private PseudoPhysicsProcessor _pseudoPhysicsProcessor;
         private SurfaceDetectionSystem _surfaceDetectionSystem;
@@ -29,7 +31,13 @@ namespace PlayneraTest.Scripts
         private void Awake()
         {
             main.Init(cameraStartX, cameraEndX, cameraMovementSpeed);
-            _dragDropSystem = new DragDropSystem(main, main, triggerZone);
+            _dragDropSystem = new DragDropActionsSystem(
+                main,
+                main,
+                new() { new ScaleUpOnDragStart(this) },
+                new() { new MoveOnDrag() },
+                new() { new ScaleDownOnDragEnd(this) },
+                triggerZone);
             _cameraSlideSystem = new CameraSlideSystem(main, main);
             _pseudoPhysicsProcessor = new PseudoPhysicsProcessor();
             _surfaceDetectionSystem = new();

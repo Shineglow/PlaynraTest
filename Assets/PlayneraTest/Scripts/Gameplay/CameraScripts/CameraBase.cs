@@ -1,27 +1,30 @@
 ﻿using Assets.PlayneraTest.Scripts.Gameplay.CameraScripts;
+using Assets.PlayneraTest.Scripts.General;
 using UnityEngine;
 
 namespace PlayneraTest.Scripts.Gameplay.CameraScripts
 {
-    public class CameraBase : MonoBehaviour, ICameraMovement, ICamera
+    public class CameraBase : MonoBehaviour, ICameraMovement, ICamera, ITransformAccessorFull
     {
         [SerializeField] private Camera _camera;
 
         private float _minPosX;
         private float _maxPosX;
-        [SerializeField] private float _movemntSpeed;
+        [SerializeField] private float _movementSpeed;
         private Vector3 _direction;
 
         public Vector3 Position
         {
-            get => _camera.transform.position;
-            private set => _camera.transform.position = value;
+            get => _camera.transform.position; set => _camera.transform.position = value;
         }
         public Quaternion Rotation
         {
-            get => _camera.transform.rotation;
-            private set => _camera.transform.rotation = value;
-        } 
+            get => _camera.transform.rotation; set => _camera.transform.rotation = value;
+        }
+        public Vector3 Scale {
+            get => _camera.transform.localScale; set => _camera.transform.localScale = value;
+        }
+
         public Vector3 Forward
         {
             get => _camera.transform.forward;
@@ -31,18 +34,18 @@ namespace PlayneraTest.Scripts.Gameplay.CameraScripts
         {
             _minPosX = minPosX;
             _maxPosX = maxPosX;
-            _movemntSpeed = movemntSpeed;
+            _movementSpeed = movemntSpeed;
         }
 
         private void Update()
         {
             if(_direction.x != 0)
             {
-                var newPos = Position + _direction * (_movemntSpeed * Time.deltaTime);
+                /* var newPos = Position + _direction * (_movemntSpeed * Time.deltaTime);
                 newPos.x = Mathf.Clamp(Position.x, _minPosX, _maxPosX);
                 Position = newPos;
 
-                _direction.x = 0f;
+                _direction.x = 0f; */
             }
         }
 
@@ -56,12 +59,8 @@ namespace PlayneraTest.Scripts.Gameplay.CameraScripts
 
         public void SetPosition(Vector3 position)
         {
-            Debug.Log("Position1: " + Position);
-            Debug.Log("position1: " + position);
             position.x = Mathf.Clamp(position.x, _minPosX, _maxPosX);
-            Debug.Log("position2: " + position);
             Position = position;
-            Debug.Log("Position2: " + Position);
         }
 
         public void SlowlyMoveToTheRight()

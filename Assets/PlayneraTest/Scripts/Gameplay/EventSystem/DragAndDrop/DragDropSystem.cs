@@ -10,7 +10,6 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
     public class DragDropSystem : IDragDropRegister
     {
         private readonly List<IDragDropItem> _items;
-        private readonly List<IDropListener> _listners;
 
         private Vector3 _pointerToObjectCenterDelta;
         private readonly ICamera _camera;
@@ -21,6 +20,8 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
 
         public bool IsDragNow { get; private set; }
 
+        public bool IsHoldNow { get; private set; }
+
         public DragDropSystem(
             ICamera camera, 
             ICameraMovement cameraMovement, 
@@ -29,7 +30,6 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
             _camera = camera;
             _cameraMovement = cameraMovement;
             _items = new List<IDragDropItem>();
-            _listners = new List<IDropListener>();
             _horizontalCameraMovementTriggerZone = horizontalCameraMovementTriggerZone;
         }
 
@@ -72,6 +72,7 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
             var newPos = Get3DWorldPositionFor2D(eventData);
             item.Position = newPos + _pointerToObjectCenterDelta;
 
+            // need to fix, camera don't slide when drag
             var horizontalPos = _camera.ScreenToViewportPoint(eventData.position).x; // 0 .. 1
             if (horizontalPos < _horizontalCameraMovementTriggerZone)
             {

@@ -15,6 +15,10 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
         private readonly ICamera _camera;
         private readonly ICameraMovement _cameraMovement;
 
+        public bool IsDragNow {get; private set;}
+
+        public bool IsHoldNow { get; private set; }
+
         public CameraSlideSystem(ICamera camera, ICameraMovement cameraMovement)
         {
             _camera = camera;
@@ -54,7 +58,7 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
         private void OnDrag(IDragDropItem item, PointerEventData eventData)
         {
             var deltaX = GetDeltaX(eventData);
-            _cameraMovement.SetPosition(_camera.Position + deltaX);
+            _cameraMovement.Position = _cameraMovement.Position + deltaX;
         }
 
         private Vector3 GetDeltaX(PointerEventData eventData)

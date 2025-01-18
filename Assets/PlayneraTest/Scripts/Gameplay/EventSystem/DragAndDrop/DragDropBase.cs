@@ -1,5 +1,6 @@
 using System;
 using Assets.PlayneraTest.Scripts.Gameplay.EventSystem;
+using Assets.PlayneraTest.Scripts.General;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,6 +11,8 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
         private IDragDropRegister _dragDropRegister;
 
         public Vector3 Position { get => transform.position; set => transform.position = value; }
+        public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
+        public Vector3 Scale { get => transform.localScale; set => transform.localScale = value; }
 
         public event Action<IDragDropItem, PointerEventData> BeginDrag;
         public event Action<IDragDropItem, PointerEventData> Drag;
@@ -36,7 +39,7 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
 
         public void OnDrag(PointerEventData eventData)
         {
-            Debug.Log($"{nameof(OnDrag)}");
+            // Debug.Log($"{nameof(OnDrag)}");
             Drag?.Invoke(this, eventData);
         }
 
@@ -48,13 +51,13 @@ namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Debug.Log($"{nameof(OnPointerDown)}");
+            // Debug.Log($"{nameof(OnPointerDown)}");
             PointerDown?.Invoke(this, eventData);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            Debug.Log($"{nameof(OnPointerUp)}");
+            // Debug.Log($"{nameof(OnPointerUp)}");
             PointerUp?.Invoke(this, eventData);
         }
 
