@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.DragAndDrop
+namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
 {
     public interface IDragDropItem
     {

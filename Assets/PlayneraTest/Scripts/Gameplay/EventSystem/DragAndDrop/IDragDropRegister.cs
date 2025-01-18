@@ -1,9 +1,12 @@
-﻿using Assets.PlayneraTest.Scripts.Gameplay.DragAndDrop;
+﻿using System;
+using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
+namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
 {
     public interface IDragDropRegister
     {
+        event Action<IDragDropItem, PointerEventData> EndDrag;
+        
         void Add(IDragDropItem item);
         void Remove(IDragDropItem item);
     }

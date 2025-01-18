@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.CameraScripts
+namespace PlayneraTest.Scripts.Gameplay.CameraScripts
 {
     public interface ICameraMovement
     {
         void SlowlyMoveToTheRight();
         void SlowlyMoveToTheLeft();
+        void SetPosition(Vector3 position);
     }
 }

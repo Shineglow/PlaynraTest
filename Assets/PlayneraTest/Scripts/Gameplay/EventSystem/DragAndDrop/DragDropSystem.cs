@@ -1,30 +1,35 @@
-﻿using Assets.PlayneraTest.Scripts.Gameplay.CameraScripts;
-using Assets.PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop;
+﻿using System;
 using System.Collections.Generic;
+using Assets.PlayneraTest.Scripts.Gameplay.CameraScripts;
+using PlayneraTest.Scripts.Gameplay.CameraScripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.DragAndDrop
+namespace PlayneraTest.Scripts.Gameplay.EventSystem.DragAndDrop
 {
     public class DragDropSystem : IDragDropRegister
     {
-        private const float MaxDistance = 100f;
-        private List<IDragDropItem> _items;
-        private List<IDropListner> _listners;
+        private readonly List<IDragDropItem> _items;
+        private readonly List<IDropListener> _listners;
 
-        private Vector3 pointerToObjectCenterDelta;
-        private ICamera _camera;
-        private ICameraMovement _cameraMovement;
-        private float _horizontalCameraMovementTriggerZone;
+        private Vector3 _pointerToObjectCenterDelta;
+        private readonly ICamera _camera;
+        private readonly ICameraMovement _cameraMovement;
+        private readonly float _horizontalCameraMovementTriggerZone;
+
+        public event Action<IDragDropItem, PointerEventData> EndDrag;
 
         public bool IsDragNow { get; private set; }
 
-        public DragDropSystem(ICamera camera, ICameraMovement cameraMovement, float horizontalCameraMovementTriggerZone)
+        public DragDropSystem(
+            ICamera camera, 
+            ICameraMovement cameraMovement, 
+            float horizontalCameraMovementTriggerZone)
         {
             _camera = camera;
             _cameraMovement = cameraMovement;
             _items = new List<IDragDropItem>();
-            _listners = new List<IDropListner>();
+            _listners = new List<IDropListener>();
             _horizontalCameraMovementTriggerZone = horizontalCameraMovementTriggerZone;
         }
 
@@ -54,7 +59,7 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.DragAndDrop
         private void OnPointerDown(IDragDropItem item, PointerEventData eventData)
         {
             Vector3 pointerPos = Get3DWorldPositionFor2D(eventData);
-            pointerToObjectCenterDelta = item.Position - pointerPos;
+            _pointerToObjectCenterDelta = item.Position - pointerPos;
         }
 
         private void OnStartDrag(IDragDropItem item, PointerEventData eventData)
@@ -65,7 +70,7 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.DragAndDrop
         private void OnDrag(IDragDropItem item, PointerEventData eventData)
         {
             var newPos = Get3DWorldPositionFor2D(eventData);
-            item.Position = newPos + pointerToObjectCenterDelta;
+            item.Position = newPos + _pointerToObjectCenterDelta;
 
             var horizontalPos = _camera.ScreenToViewportPoint(eventData.position).x; // 0 .. 1
             if (horizontalPos < _horizontalCameraMovementTriggerZone)
@@ -81,23 +86,7 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.DragAndDrop
         private void OnEndDrag(IDragDropItem item, PointerEventData eventData) 
         {
             IsDragNow = false;
-            Ray ray = _camera.ViewportPointToRay(eventData.position);
-            if(Physics.BoxCast(
-                item.Position, 
-                item.GetBoundingBox().extents, 
-                _camera.Forward, 
-                out var hitInfo,
-                _camera.Rotation,
-                MaxDistance,
-                LayerMask.GetMask("DropListner")))
-            {
-                if(!hitInfo.transform.TryGetComponent<IDropListner>(out var dragDropItem))
-                {
-                    Debug.LogError($"Item with \"DropListner\" layer hasn't component of {nameof(IDropListner)}");
-                }
-
-                dragDropItem.OnItemDroped(item);
-            }
+            EndDrag?.Invoke(item, eventData);
         }
 
         private Vector3 Get3DWorldPositionFor2D(PointerEventData eventData)

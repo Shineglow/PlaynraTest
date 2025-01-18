@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.PlayneraTest.Scripts.Gameplay.CameraScripts;
+using UnityEngine;
 
-namespace Assets.PlayneraTest.Scripts.Gameplay.CameraScripts
+namespace PlayneraTest.Scripts.Gameplay.CameraScripts
 {
     public class CameraBase : MonoBehaviour, ICameraMovement, ICamera
     {
@@ -37,7 +38,7 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.CameraScripts
         {
             if(_direction.x != 0)
             {
-                var newPos = Position + _direction * _movemntSpeed * Time.deltaTime;
+                var newPos = Position + _direction * (_movemntSpeed * Time.deltaTime);
                 newPos.x = Mathf.Clamp(Position.x, _minPosX, _maxPosX);
                 Position = newPos;
 
@@ -51,6 +52,16 @@ namespace Assets.PlayneraTest.Scripts.Gameplay.CameraScripts
             {
                 _direction.x = -1f;
             }
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            Debug.Log("Position1: " + Position);
+            Debug.Log("position1: " + position);
+            position.x = Mathf.Clamp(position.x, _minPosX, _maxPosX);
+            Debug.Log("position2: " + position);
+            Position = position;
+            Debug.Log("Position2: " + Position);
         }
 
         public void SlowlyMoveToTheRight()
